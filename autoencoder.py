@@ -43,6 +43,24 @@ def cnn_autoencoder(input_img):
     autoencoder.compile(loss = 'mean_squared_error', optimizer = 'adam')
     return autoencoder
 
+def get_encoded(model, x):
+    get_encoded = K.function([model.layers[0].input], [model.layers[5].output])
+    encoded_sample = get_encoded([x])[0]
+
+    for n_image in [1, 3, 7]:
+        plt.figure(figsize=(18,4))
+
+        plt.subplot(1,4,1)
+        plt.imshow(x[n_image][:,:,::-1])
+        plt.axis('off')
+        plt.title('Original Image')
+
+        plt.subplot(1,4,2)
+        plt.imshow(encoded_sample[n_image].max(axis=-1))
+        plt.axis('off')
+        plt.title('Encoded Max')
+
+        plt.show()
 
 def plot_reconstruction(X_orig, X_decoded, n = 10, plotname = None):
     '''
@@ -70,6 +88,40 @@ def plot_reconstruction(X_orig, X_decoded, n = 10, plotname = None):
     else:
         plt.show()
 
+def pool_conv_layer(model, X_data, last_conv_layer=4):
+    # Run the model up until the last convolutional layer.
+    get_encoded = K.function([model.layers[0].input],
+                             [model.layers[last_conv_layer].output])
+    encoded_array = get_encoded([X_data])[0]
+    pooled_array = encoded_array.max(axis=-1)
+    return pooled_array
+
+def plot_with_attention(model, x, n_images, last_conv_layer=4):
+    # Randomly choose just the arrays to plot.
+    X_to_plot = X_data[np.random.choice(range(len(X_data)), 2*n_images, replace=False)]
+    # Run pool_conv_layer to get the pooled image.
+    pooled_array = pool_conv_layer(model, X_to_plot, last_conv_layer)
+
+    # Plot them,
+    plt.figure(figsize=(14, 4*n_images))
+    for i in range(n_images):
+        plt.subplot(n_images, 4, 4*i+1)
+        plt.imshow(X_to_plot[i][:,:,::-1])
+        plt.axis('off')
+        plt.subplot(n_images, 4, 4*i+2)
+        # Resize the encoded image to be the same as the original.
+        plt.imshow(cv2.resize(pooled_array[i], (X_to_plot.shape[1], X_to_plot.shape[2])))
+        plt.axis('off')
+        # four per row.
+        plt.subplot(n_images, 4, 4*i+3)
+        plt.imshow(X_to_plot[i+n_images][:,:,::-1])
+        plt.axis('off')
+        plt.subplot(n_images, 4, 4*i+4)
+        plt.imshow(cv2.resize(pooled_array[i+n_images], (X_to_plot.shape[1], X_to_plot.shape[2])))
+        plt.axis('off')
+
+    plt.show()
+
 if __name__ == '__main__':
     train_files = glob.glob('thumbnails/train/*.jpg')
     x_train = np.array([np.array(Image.open(fname)) for fname in train_files])
@@ -94,3 +146,10 @@ if __name__ == '__main__':
     # restored_imgs = cnn_model.predict(x_test)
     #plot_reconstruction(x_test, restored_imgs, n=10)
     #plot_model(cnn_model, show_shapes=True, to_file = 'model1.png')
+    #cnn_model.save('cnn_model1.h5')
+
+    #get encoded model and plot
+    get_encoded(cnn_model, x_train)
+
+    #attention model
+    plot_with_attention(cnn_model, x_train, 3)
