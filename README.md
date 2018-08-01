@@ -34,6 +34,40 @@ Next pool up to the last convolutional later in the model. The image on the righ
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/plot_with_attention.png)
 
 ## KMeans
+Clustering with encoded images - 7 was optimal 7
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/elbow_plot.png)
+
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster_hist.png)
+
+#### Images from each cluster:
+
+Cluster 0 (n = 47)
+
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster0.png)
+
+Cluster 1 (n = 44)
+
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster1.png)
+
+Cluster 2 (n = 49)
+
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster2.png)
+
+Cluster 3 (n = 31)
+
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster3.png)
+
+Cluster 4 (n = 68)
+
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster4.png)
+
+Cluster 5 (n = 34)
+
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster5.png)
+
+Cluster 6 (n = 44)
+
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster6.png)
 
 ## Next Steps:
 1. Train a neural network to detect bouquets in images
