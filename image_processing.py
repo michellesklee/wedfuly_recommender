@@ -6,6 +6,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def square_crop(image):
+    """Crops original image to square
+
+    Parameters
+    ----------
+    image: numpy array
+
+    Returns
+    -------
+    shape of cropped image as tuple
+    """
+
     height = image.shape[0]
     width = image.shape[1]
 
@@ -16,6 +27,21 @@ def square_crop(image):
     return cropped.shape
 
 def resize_img(img_root, target_root, new_size, border_size, border_color):
+    """Resizes image, adds border, and changes color channel
+
+    Parameters
+    ----------
+    img_root: root directory
+    target_root: target directory
+    new_size: desired size as tuple
+    border_size: desired border size as int
+    border_color: desired border color
+
+    Returns
+    -------
+    modified image saved to target directory
+    """
+
     files = [f for f in listdir(img_root) if isfile(join(img_root, f))]
 
     for file in files:
@@ -36,14 +62,25 @@ def resize_img(img_root, target_root, new_size, border_size, border_color):
 
 
 def train_test_split(target_root, split=.20):
+    """Splits data
+
+    Parameters
+    ----------
+    target_root: target directory
+    split: desired split between train and test
+
+    Returns
+    -------
+    makes train and test directories in target directory and adds random images to train and test directories
+    """
     files = np.array([f for f in listdir(target_root) if isfile(join(target_root, f))])
 
     train_path = target_root + 'train/'
     test_path = target_root + 'test/'
     valid_path = target_root + 'valid/'
-    mkdir(train_path)
-    mkdir(test_path)
-    mkdir(valid_path)
+    # mkdir(train_path)
+    # mkdir(test_path)
+    # mkdir(valid_path)
 
     test_files = np.random.choice(files, int(split*len(files)))
     for file in test_files:
@@ -53,8 +90,10 @@ def train_test_split(target_root, split=.20):
         copyfile(target_root + file, train_path + file)
 
 if __name__ == '__main__':
-    img_root = 'test_images/'
-    target_root = 'thumbnails/'
+    # img_root = 'images/'
+    img_root = 'images/vendors/'
+    # target_root = 'thumbnails/'
+    target_root = 'thumbnails/test/'
 
-    train_test_split(target_root)
-    resize_img(img_root, target_root, new_size=(98, 98), border_size=20, border_color=[0,0,0])
+    #train_test_split(target_root) #for some reason have to run this twice commenting out the mkdir
+    resize_img(img_root, target_root, new_size=(100, 100), border_size=20, border_color=[0,0,0])
