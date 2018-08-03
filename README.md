@@ -1,14 +1,20 @@
+[Add Wedfuly image]
+
+<h1 align="center"> Vendor Recommender for Wedfuly </h1>
+
+[Project Description]
+
 ## Data Collection:
 1. Images of bridal bouquets collected online from florists in Colorado (n = 387) - test set
 2. Images from Wedfuly florists (n = 115) - train set
 3. Unseen images collected online (n = 40) - validation set
 
-## Image Processing
+## Feature Engineering
+### Image Processing Steps:
 1. Cropped bouquets from images
 2. Cropped images to square
 3. Resized images to 100x100
 4. Converted to RGB
-
 
 ## Convolutional Autoencoder
 
@@ -78,47 +84,50 @@ Cluster 6 (n = 55)
 #### Evaluating the model
 Since there is no way to validate the model, I randomly chose 40 images googling "bridal bouquet" and tested those clusters against the vendor clusters (and training clusters) - so if you were to add these in your pinterest board, the recommender would recommend the following 3 vendor images
 
-If you like this...
+##### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster0.png)
 
-You might like these vendors...
+##### You might like these vendors...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster0.png)
-
-If you like this...
+___
+##### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster1.png)
 
-You might like these vendors...
+##### You might like these vendors...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster1.png)
-
-If you like this...
+___
+##### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster2.png)
 
-You might like these vendors...
+##### You might like these vendors...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster2.png)
-
-If you like this...
+___
+##### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster3.png)
 
-You might like these vendors...
+##### You might like these vendors...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster3.png)
-
-If you like this...
+___
+##### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster4.png)
 
-You might like these vendors...
+##### You might like these vendors...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster4.png)
-
-If you like this...
+___
+##### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster5.png)
 
-You might like these vendors...
+##### You might like these vendors...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster5.png)
-
-If you like this...
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster5.png)
-
-You might like these vendors...
+___
+##### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster6.png)
+
+##### You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster6.png)
+___
+## Conclusion
+Even with limited training images, a kMeans algorithm on top of a CNN autoencoder has potential to  cluster images for recommendation purposes.
 
 ## Next Steps:
 1. Include survey data in algorithm (e.g., budget)
