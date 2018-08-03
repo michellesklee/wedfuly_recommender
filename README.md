@@ -2,7 +2,9 @@
 
 <h1 align="center"> Vendor Recommender for Wedfuly </h1>
 <h4 align="center"> Part I: Cluster Florists with CNN Autoencoder + KMeans </h4>
+
 ___
+
 
 On Wedfuly, clients work online with wedding planners who help with the planning process, including choosing wedding vendors such as florists, photographers, and bakeries.
 
@@ -23,13 +25,15 @@ For the first part of this project, I focused on florists with the goal of train
 
 ## Convolutional Autoencoder
 
-<center>![cnn](https://cdn-images-1.medium.com/max/1818/1*8ixTe1VHLsmKB3AquWdxpQ.png)</center>
+![cnn](https://cdn-images-1.medium.com/max/1818/1*8ixTe1VHLsmKB3AquWdxpQ.png)
 
-<center>![cnn](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/model1.png)</center>
+![cnn_arch](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/model1.png)
 
 ![loss_plot](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/loss_plot.png)
 
 loss: 0.0140 - val_loss: 0.0142
+
+___
 
 ### Reconstructed Images
 ![reconstructed](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cnn_first_pass.png)
@@ -49,11 +53,11 @@ Pool filters from the encoded layers to see where model is paying most attention
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/encoded2.png)
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/encoded3.png)
 
-Next pool up to the last convolutional layer in the model. The images on the right is the max of the filters of the decoded image. Bright spots are where the model is activated the most. (excited about bright things and contrasts)
+Next pool up to the last convolutional layer in the model. The images on the right show the max of the filters. Bright spots are where the model is activated the most -- seemingly bright things and contrasts.
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/plot_with_attention.png)
 
-## KMeans
+## Clustering - KMeans
 Clustering with KMeans - 7 was optimal k
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/elbow_plot.png)
 
@@ -61,31 +65,31 @@ Clustering with KMeans - 7 was optimal k
 
 ### Images from each cluster:
 
-Cluster 0: "Traditional" (75 images)
+#### Cluster 0: "Traditional" (75 images)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster0.png)
 
-Cluster 1: "Moody and Dark" (38 images)
+#### Cluster 1: "Moody and Dark" (38 images)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster1.png)
 
-Cluster 2: "Light and Modern" (44 images)
+#### Cluster 2: "Light and Modern" (44 images)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster2.png)
 
-Cluster 3: "Simply Minimal" (59 images)
+#### Cluster 3: "Simply Minimal" (59 images)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster3.png)
 
-Cluster 4: "Colorful and Bold" (52 images)
+#### Cluster 4: "Colorful and Bold" (52 images)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster4.png)
 
-Cluster 5: "Moody and Wild" (63 images)
+#### Cluster 5: "Moody and Wild" (63 images)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster5.png)
 
-Cluster 6: "Earthy Modern" (55 images)
+#### Cluster 6: "Earthy Modern" (55 images)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster6.png)
 
