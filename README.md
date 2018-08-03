@@ -1,7 +1,7 @@
 ## Data Collection:
 1. Images of bridal bouquets collected online from florists in Colorado (n = 387) - test set
 2. Images from Wedfuly florists (n = 115) - train set
-3. Unseen images collected online ()
+3. Unseen images collected online (n = 40) - validation set
 
 ## Image Processing
 1. Cropped bouquets from images
@@ -14,6 +14,7 @@
 
 ![cnn](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/model1.png)
 
+![loss_plot](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/loss_plot.png)
 loss: 0.0140 - val_loss: 0.0142
 
 #### Reconstructed Images
@@ -73,6 +74,51 @@ Cluster 5 (n = 63)
 Cluster 6 (n = 55)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster6.png)
+
+#### Evaluating the model
+Since there is no way to validate the model, I randomly chose 40 images googling "bridal bouquet" and tested those clusters against the vendor clusters (and training clusters) - so if you were to add these in your pinterest board, the recommender would recommend the following 3 vendor images
+
+If you like this...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster0.png)
+
+You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster0.png)
+
+If you like this...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster1.png)
+
+You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster1.png)
+
+If you like this...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster2.png)
+
+You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster2.png)
+
+If you like this...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster3.png)
+
+You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster3.png)
+
+If you like this...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster4.png)
+
+You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster4.png)
+
+If you like this...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster5.png)
+
+You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster5.png)
+
+If you like this...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster5.png)
+
+You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster6.png)
 
 ## Next Steps:
 1. Include survey data in algorithm (e.g., budget)
