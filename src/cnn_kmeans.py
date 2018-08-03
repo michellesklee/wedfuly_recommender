@@ -281,7 +281,6 @@ def attention_model(model, x, n_images, last_conv_layer=4):
 
     plt.show()
 
-##trying kmeans stuff - delete if it doesn't work
 def plot_three(im_list):
     plt.figure(figsize=(14,4))
     for i, array in enumerate(im_list):
@@ -317,7 +316,6 @@ def plot_images(x, labels, clusters, num):
         plot_three(x[np.random.choice(np.where(labels==i)[0], num, replace=False), :])
 
 
-###end of kmeans
 if __name__ == '__main__':
     train_files = glob.glob('../thumbnails/train/*.jpg')
     x_train = np.array([np.array(Image.open(fname)) for fname in train_files])
@@ -341,7 +339,7 @@ if __name__ == '__main__':
     input_img = Input(shape = (x, y, inChannel))
     input_shape = (100, 100, 3)
 
-    #cnn model
+    ########### CNN Autoencoder ###########
     cnn_model = cnn_autoencoder(input_img)
     cnn_model.fit(x_train, x_train, epochs=epochs, batch_size=batch_size, shuffle=True, verbose=1, validation_split=0.1)
     restored_imgs = cnn_model.predict(x_test)
@@ -359,20 +357,16 @@ if __name__ == '__main__':
     #plot attention model
     attention_model(cnn_model, x_train, 3)
 
-    #k means stuff - delete if it doesn't work
+    ########### KMeans ###########
     n_clusters = 7
-    # train_tall = x_train.reshape(np.size(x_train, 0), x_train[0].size)
-    # test_tall = x_test.reshape(np.size(x_test, 0), x_test[0].size)
-    # valid_tall = x_valid.reshape(np.size(x_valid, 0), x_valid[0].size)
 
+    X_encoded_compressed_reshape = encoded_compressed(cnn_model, x_train)
     test_enc_compress = encoded_compressed(cnn_model, x_test)
     valid_enc_compress = encoded_compressed(cnn_model, x_valid)
 
-    X_encoded_compressed_reshape = encoded_compressed(cnn_model, x_train)
-
     km = KMeans(n_clusters=n_clusters)
     km.fit(X_encoded_compressed_reshape)
-    #km.fit(train_tall)
+
     test_labels = km.predict(test_enc_compress)
     train_labels = km.labels_
     valid_labels = km.predict(valid_enc_compress)
