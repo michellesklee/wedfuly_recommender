@@ -1,21 +1,18 @@
-import numpy as np
-import pandas as pd
-from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten, Input, UpSampling2D, Convolution2D, MaxPooling2D, GlobalMaxPooling2D, GlobalAveragePooling2D
-from keras.layers.convolutional import Conv2D, ZeroPadding2D
-from keras.models import Model
-from keras.utils import np_utils, layer_utils
-from keras.optimizers import RMSprop
-from sklearn.model_selection import train_test_split
-from keras import backend as K
-from keras.utils.data_utils import get_file
-from os import listdir, mkdir
-from os.path import isfile, join
 import cv2
 import glob
 from PIL import Image
+import numpy as np
+from os import listdir, mkdir
+from os.path import isfile, join
 import matplotlib.pyplot as plt
+from keras import backend as K
+from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
+from keras.models import Model, Sequential
+from keras.layers import Dense, Dropout, Activation, Flatten, Input, UpSampling2D, Convolution2D, MaxPooling2D, GlobalMaxPooling2D, GlobalAveragePooling2D
+from keras.layers.convolutional import Conv2D, ZeroPadding2D
+from keras.utils import np_utils, layer_utils
+from keras.optimizers import RMSprop
+from keras.utils.data_utils import get_file
 from keras.utils.vis_utils import plot_model
 
 def cnn_autoencoder(input_img):
@@ -23,7 +20,7 @@ def cnn_autoencoder(input_img):
 
     Parameters
     ----------
-    input_img: numpy array
+    input_img: images as numpy arrays
 
     Returns
     -------
@@ -49,42 +46,80 @@ def cnn_autoencoder(input_img):
     return autoencoder
 
 def get_encoded(model, x):
-    """Gets 
+    """Runs initial encoder layers of the model
 
     Parameters
     ----------
-    image: numpy array
+    model: neural network with convolutional layer
+    x: data to be encoded
 
     Returns
     -------
-    shape of cropped image as tuple
+    encoded sample as numpy array with dimensions up to last conv layer in encoder (e.g., (386, 25, 25, 128))
     """
 
     get_encoded = K.function([model.layers[0].input], [model.layers[5].output])
     encoded_sample = get_encoded([x])[0]
     return encoded_sample
 
-'''this might be useful later when data files are large
 def get_batches(x, batch_size=1000):
+    '''Split data into batches for large datasets
+
+    Parameters
+    ----------
+    x: data to be split
+    batch_size: desired batch size
+
+    Returns
+    -------
+    Batches of desired size
+    '''
+
     if len(x) < batch_size:
         return [x]
     n_batches = len(x) // batch_size
+
     # If batches fit exactly into the size of x.
     if len(x) % batch_size == 0:
         return [x[i*batch_size:(i+1)*batch_size] for i in range(n_batches)]
+
     # If there is a remainder.
     else:
         return [x[i*batch_size:min((i+1)*batch_size, len(x))] for i in range(n_batches+1)]
 
 def pool_conv_layer(model, x, last_conv_layer=4):
-    # Run the model up until the last convolutional layer.
+    ''' Pool the model up to the last convolutional layer in encoder
+
+    Parameters
+    ----------
+    model: neural network with convolutional layer
+    x: data to be pooled
+    last_conv_layer: last convolutional layer in encoder
+
+    Returns
+    -------
+    Pooled array with dimensions up to last conv layer in encoder (e.g., (386, 25, 25))
+    '''
+
     get_encoded = K.function([model.layers[0].input],
                              [model.layers[last_conv_layer].output])
-    encoded_array = get_encoded(model, [x])[0]
-    pooled_array = encoded_array.max(axis=-1)
+    encoded_sample = get_encoded([x])[0]
+    pooled_array = encoded_sample.max(axis=-1)
     return pooled_array
 
 def pool_encoded(model, x):
+    '''Collect encoded data in batches when datasets are large
+
+    Parameters
+    ----------
+    model: neural network with convolutional layer
+    x: data to be encoded and pooled
+
+    Returns
+    -------
+    Pooled and encoded data in desired batch saved as .npy file
+    '''
+
     X_encoded = []
     i=0
 
@@ -95,10 +130,22 @@ def pool_encoded(model, x):
         X_encoded.append(pool_conv_layer(model, x_train))
 
     X_encoded = np.concatenate(X_encoded)
-    np.save('X_encoded.npy', X_encoded)
+    #np.save('X_encoded.npy', X_encoded)
     return X_encoded
 
-def pool_encoded_compressed(model, x):
+def encoded_compressed(model, x):
+    '''Keep layer information (don't pool) and compress
+
+    Parameters
+    ----------
+    model: neural network with convolutional layer
+    x: data to be encoded and pooled
+
+    Returns
+    -------
+    Encoded and compressed images saved as .npy file
+    '''
+
     X_encoded = pool_encoded(model, x)
     X_encoded_compressed = []
     i=0
@@ -121,13 +168,60 @@ def pool_encoded_compressed(model, x):
                                                                 X_encoded_compressed.shape[1]*X_encoded_compressed.shape[2]*X_encoded_compressed.shape[3])
     print('Encoded compressed shape:', X_encoded_compressed_reshape.shape)
     return X_encoded_compressed_reshape
-'''
+
 
 ########### VISUALIZATION ###########
 
+def plot_reconstruction(x_orig, x_decoded, n=10, plotname=None):
+    '''Visualize images before and after running through autoencoder
+
+    Parameters
+    ----------
+    x_orig: 2D numpy array
+    x_recon: 2D numpy array
+    n: int, number of images to plot
+    plotname: str, path to save file
+
+    Returns
+    -------
+    Plot of original and decoded images
+    '''
+
+    plt.figure(figsize=(n*2, 4))
+    for i in range(n):
+        # display original
+        ax = plt.subplot(2, n, i + 1)
+        plt.imshow(X_orig[i].reshape(100, 100, 3))
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+
+        # display reconstruction
+        ax = plt.subplot(2, n, i + 1 + n)
+        plt.imshow(X_decoded[i].reshape(100, 100, 3))
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+
+    if plotname:
+        plt.savefig(plotname)
+    else:
+        plt.show()
+
 def get_encoded_plot(model, x):
+    """Visualize the model after pooling up to last convolutional layer to see where the model is paying most attention
+
+    Parameters
+    ----------
+    model: neural network with convolutional layer
+    x: data to be encoded
+
+    Returns
+    -------
+    Plot of original image and encoded image
+    Encoded image shows the max of the filters (i.e., axis=-1)
+    """
+
     get_encoded = K.function([model.layers[0].input], [model.layers[5].output])
-    encoded_sample = get_encoded([x])[0]
+    encoded_sample = get_encoded([x])[0] #should have shape like (25, 25, 128)
 
     for n_image in [1, 3, 7]:
         plt.figure(figsize=(18,4))
@@ -138,14 +232,28 @@ def get_encoded_plot(model, x):
         plt.title('Original Image')
 
         plt.subplot(1,4,2)
-        plt.imshow(encoded_sample[n_image].max(axis=-1))
+        plt.imshow(encoded_sample[n_image].max(axis=-1)) #axis=-1 == 128
         plt.axis('off')
         plt.title('Encoded Max')
 
         plt.show()
 
-def plot_with_attention(model, x, n_images, last_conv_layer=4):
-    # Randomly choose just the arrays to plot.
+def attention_model(model, x, n_images, last_conv_layer=4):
+    """Visualize model with pooled filters up to the last convolutional layer in encoder to see where the model is paying most attention
+
+    Parameters
+    ----------
+    model: neural network with convolutional layer
+    x: data to be encoded
+    n_images: desired number of images
+    last_conv_layer: last convolutional layer in encoder
+
+    Returns
+    -------
+    Plot of original image and images up to the last convolutional layer
+    Encoded image shows the max of the filters (i.e., axis=-1)
+    """
+    # Randomly choose the arrays to plot.
     X_to_plot = x[np.random.choice(range(len(x)), 2*n_images, replace=False)]
     # Run pool_conv_layer to get the pooled image.
     pooled_array = pool_conv_layer(model, X_to_plot, last_conv_layer)
@@ -170,31 +278,6 @@ def plot_with_attention(model, x, n_images, last_conv_layer=4):
 
     plt.show()
 
-def plot_reconstruction(X_orig, X_decoded, n = 10, plotname = None):
-    '''
-    inputs: X_orig (2D np array of shape (nrows, 784))
-            X_recon (2D np array of shape (nrows, 784))
-            n (int, number of images to plot)
-            plotname (str, path to save file)
-    '''
-    plt.figure(figsize=(n*2, 4))
-    for i in range(n):
-        # display original
-        ax = plt.subplot(2, n, i + 1)
-        plt.imshow(X_orig[i].reshape(100, 100, 3))
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
-
-        # display reconstruction
-        ax = plt.subplot(2, n, i + 1 + n)
-        plt.imshow(X_decoded[i].reshape(100, 100, 3))
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
-
-    if plotname:
-        plt.savefig(plotname)
-    else:
-        plt.show()
 
 if __name__ == '__main__':
     train_files = glob.glob('thumbnails/train/*.jpg')
@@ -218,14 +301,20 @@ if __name__ == '__main__':
     cnn_model = cnn_autoencoder(input_img)
     cnn_model.fit(x_train, x_train, epochs=epochs, batch_size=batch_size, shuffle=True, verbose=1, validation_split=0.1)
     restored_imgs = cnn_model.predict(x_test)
-    plot_reconstruction(x_test, restored_imgs, n=10)
-    plot_model(cnn_model, show_shapes=True, to_file = 'model1.png')
     cnn_model.save('cnn_model1.h5')
 
+    #plot cnn architecture
+    plot_model(cnn_model, show_shapes=True, to_file = 'model1.png')
+
+    #plot reconstructed images
+    plot_reconstruction(x_test, restored_imgs, n=10)
+
+    #plot encoded images
     get_encoded_plot(cnn_model, x_train)
 
-    #attention model
-    plot_with_attention(cnn_model, x_train, 3)
+    #plot attention model
+    attention_model(cnn_model, x_train, 3)
 
-    #for later when data files are large -  kmeans(X_encoded_compressed_reshape):
-    #X_encoded_compressed_reshape = pool_encoded_compressed(cnn_model, x_train)
+    #move to kmeans
+    #X_encoded_compressed_reshape = encoded_compressed(cnn_model, x_train)
+    #kmeans(X_encoded_compressed_reshape)
