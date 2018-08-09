@@ -21,11 +21,11 @@ def cnn_autoencoder(input_img):
 
     Parameters
     ----------
-    input_img: images as numpy arrays
+    input_img: images as 3D numpy array
 
     Returns
     -------
-    keras.engine.training.Model
+    keras training model
     """
 
     #encoder
@@ -56,18 +56,18 @@ def get_batches(x, batch_size=1000):
 
     Returns
     -------
-    List, batches of desired size
+    list, batches of desired size
     '''
 
     if len(x) < batch_size:
         return [x]
     n_batches = len(x) // batch_size
 
-    # If batches fit exactly into the size of x.
+    # if batches fit exactly into the size of x
     if len(x) % batch_size == 0:
         return [x[i*batch_size:(i+1)*batch_size] for i in range(n_batches)]
 
-    # If there is a remainder.
+    # if there is a remainder
     else:
         return [x[i*batch_size:min((i+1)*batch_size, len(x))] for i in range(n_batches+1)]
 
@@ -77,11 +77,11 @@ def get_encoded(model, x):
     Parameters
     ----------
     model: neural network with convolutional layer
-    x: data to be encoded
+    x: images to be encoded
 
     Returns
     -------
-    numpy array, encoded sample with dimensions up to last conv layer in encoder (e.g., (386, 25, 25, 128))
+    3D numpy array, encoded sample with dimensions up to last conv layer in encoder (e.g., (386, 25, 25, 128))
     """
 
     get_encoded = K.function([model.layers[0].input], [model.layers[5].output])
@@ -94,12 +94,12 @@ def pool_conv_layer(model, x, last_conv_layer=4):
     Parameters
     ----------
     model: neural network with convolutional layer
-    x: data to be pooled
+    x: images to be pooled
     last_conv_layer: last convolutional layer in encoder
 
     Returns
     -------
-    Numpy array, pooled array with dimensions up to last conv layer in encoder (e.g., (386, 25, 25))
+    3D numpy array, pooled array with dimensions up to last conv layer in encoder (e.g., (386, 25, 25))
     '''
 
     get_encoded = K.function([model.layers[0].input],
@@ -114,11 +114,11 @@ def pool_encoded(model, x):
     Parameters
     ----------
     model: neural network with convolutional layer
-    x: data to be encoded and pooled
+    x: images to be encoded and pooled
 
     Returns
     -------
-    numpy array, pooled and encoded data in desired batches
+    3D numpy array, pooled and encoded data in desired batches
     saved .npy file
     '''
 
@@ -141,7 +141,7 @@ def encoded_compressed(model, x):
     Parameters
     ----------
     model: neural network with convolutional layer
-    x: data to be encoded and pooled
+    x: images to be encoded and compressed
 
     Returns
     -------
@@ -173,36 +173,70 @@ def encoded_compressed(model, x):
         return X_encoded_compressed_reshape
 
 
-########### VISUALIZATION ###########
+############### VISUALIZATION ###############
 
-def plot_reconstruction(x_orig, x_decoded, n=10, plotname=None):
+########### 1. CNN VISUALIZATION ###########
+
+def loss_plot(model, plotname=None):
+    '''Plots train and validation loss over epochs
+
+    Parameters
+    ----------
+    model: neural network with convolutional layer
+    plotname: path to save file
+
+    Returns
+    -------
+    loss plot
+    '''
+
+    fig = plt.figure(figsize=(12, 6))
+    ax1 = fig.add_subplot(1,2,1)
+    plt.plot(model.history.history['loss'])
+    ax1.set_xlabel('epochs')
+    # ax1.set_xlim(0, 20)
+    ax1.set_title('loss')
+
+    ax2 = fig.add_subplot(1,2,2)
+    plt.plot(model.history.history['val_loss'])
+    ax2.set_xlabel('epochs')
+    # ax2.set_xlim(0, 20)
+    # ax2.set_ylim(0, 0.03)
+    ax2.set_title('validation loss')
+
+    if plotname:
+        plt.savefig(plotname)
+    else:
+        plt.show()
+
+def plot_reconstruction(x_orig, x_recon, n_images=10, plotname=None):
     '''Visualize images before and after running through autoencoder
 
     Parameters
     ----------
-    x_orig: 2D numpy array
-    x_recon: 2D numpy array
-    n: int, number of images to plot
-    plotname: str, path to save file
+    x_orig: original images as 4D numpy array
+    x_recon: reconstructed images as 4D numpy array
+    n_images: number of images to plot
+    plotname: path to save file
 
     Returns
     -------
     Plot of original and decoded images
     '''
 
-    plt.figure(figsize=(n*2, 4))
-    for i in range(n):
+    plt.figure(figsize=(n_images*4, 4))
+    for i in range(n_images):
         # display original
-        ax = plt.subplot(2, n, i + 1)
+        plt.subplot(2, n_images, i + 1)
         plt.imshow(x_orig[i].reshape(100, 100, 3))
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
+        plt.axis('off')
+        plt.title('Original Image')
 
         # display reconstruction
-        ax = plt.subplot(2, n, i + 1 + n)
-        plt.imshow(x_decoded[i].reshape(100, 100, 3))
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
+        plt.subplot(2, n_images, i + 1 + n_images)
+        plt.imshow(x_recon[i].reshape(100, 100, 3))
+        plt.axis('off')
+        plt.title('Reconstructed')
 
     if plotname:
         plt.savefig(plotname)
@@ -215,7 +249,7 @@ def get_encoded_plot(model, x):
     Parameters
     ----------
     model: neural network with convolutional layer
-    x: data to be encoded
+    x: images to be encoded
 
     Returns
     -------
@@ -241,21 +275,23 @@ def get_encoded_plot(model, x):
 
         plt.show()
 
-def attention_model(model, x, n_images, last_conv_layer=4):
+def attention_model(model, x, n_images, last_conv_layer=4, plotname=None):
     """Visualize model with pooled filters up to the last convolutional layer in encoder to see where the model is paying most attention
 
     Parameters
     ----------
     model: neural network with convolutional layer
-    x: data to be encoded
+    x: images to be encoded as 4D array
     n_images: desired number of images
     last_conv_layer: last convolutional layer in encoder
+    plotname: path to save file
 
     Returns
     -------
     Plot of original image and images up to the last convolutional layer
     Encoded image shows the max of the filters (i.e., axis=-1)
     """
+
     # Randomly choose the arrays to plot.
     X_to_plot = x[np.random.choice(range(len(x)), 2*n_images, replace=False)]
     # Run pool_conv_layer to get the pooled image.
@@ -267,33 +303,47 @@ def attention_model(model, x, n_images, last_conv_layer=4):
         plt.subplot(n_images, 4, 4*i+1)
         plt.imshow(X_to_plot[i][:,:,::-1])
         plt.axis('off')
+        plt.title('Original Image')
+
         plt.subplot(n_images, 4, 4*i+2)
         # Resize the encoded image to be the same as the original.
         plt.imshow(cv2.resize(pooled_array[i], (X_to_plot.shape[1], X_to_plot.shape[2])))
         plt.axis('off')
+        plt.title('Pooled Filters')
+
         # four per row.
         plt.subplot(n_images, 4, 4*i+3)
         plt.imshow(X_to_plot[i+n_images][:,:,::-1])
         plt.axis('off')
+
         plt.subplot(n_images, 4, 4*i+4)
         plt.imshow(cv2.resize(pooled_array[i+n_images], (X_to_plot.shape[1], X_to_plot.shape[2])))
         plt.axis('off')
 
-    plt.show()
+    if plotname:
+        plt.savefig(plotname)
+    else:
+        plt.show()
 
-def plot_three(im_list):
-    plt.figure(figsize=(14,4))
-    for i, array in enumerate(im_list):
-        plt.subplot(1, len(im_list), i+1)
-        plt.imshow(array[:,:,::-1])
-        plt.axis('off')
-    plt.show()
+########### 2. KMEANS CLUSTERING VISUALIZATION ###########
 
-def elbow_plot(x):
+def elbow_plot(x, K, plotname=None):
+    '''Plots elbow plot for optimal k
+
+    Parameters
+    ----------
+    x: images to plot as 4D array
+    k: range of k to test
+    plotname: path to save file
+
+    Returns
+    -------
+    Elbow plot
+    '''
+
     cluster_errors = []
 
-    K = range(1, 10)
-    for k in K:
+    for k in range(K):
         km = KMeans(n_clusters=k)
         clusters = km.fit(x)
         cluster_errors.append(clusters.inertia_)
@@ -303,17 +353,75 @@ def elbow_plot(x):
     plt.xlabel('k')
     plt.ylabel('error')
     plt.title('Elbow Plot for Optimal k')
-    #plt.savefig('elbow_plot.png')
+
+    if plotname:
+        plt.savefig(plotname)
+    else:
+        plt.show()
+
+def cluster_hist(labels, n_clusters, plotname=None):
+    '''Plot number of images per cluster
+
+    Parameters
+    ----------
+    labels: labels from kMeans
+    n_clusters: number of clusters
+    plotname: path to save file
+
+    Returns
+    -------
+    Histogram of images per cluster
+    '''
+
+    plt.figure(figsize=(10,4))
+    plt.hist(labels, bins=n_clusters)
+    plt.xticks(range(n_clusters))
+    plt.xlabel('k')
+    plt.ylabel('number of images')
+    plt.title('Number of Images Per Cluster')
+
+    if plotname:
+        plt.savefig(plotname)
+    else:
+        plt.show()
+
+def plot_images(im_list, title):
+    '''Plot number of images
+
+    Parameters
+    ----------
+    im_list: images to plot
+
+    Returns
+    -------
+    Plot of images
+    '''
+    plt.figure(figsize=(14,4))
+    for i, array in enumerate(im_list):
+        plt.subplot(1, len(im_list), i+1)
+        plt.imshow(array[:,:,::-1])
+        plt.axis('off')
+    plt.title(title)
     plt.show()
 
-def plot_images_from_cluster(x, n_clusters, labels):
-    for i in range(n_clusters):
-        print('Cluster {}: {} Elements'.format(i, (labels==i).sum()))
-        plot_three(x[np.random.choice(np.where(labels==i)[0], 9, replace=False), :])
+def plot_clusters(x, labels, clusters, n_images):
+    '''Plot clusters by labels
 
-def plot_images(x, labels, clusters, num):
+    Parameters
+    ----------
+    x: images to plot
+    labels: labels of images
+    clusters: number of clusters
+    n_images: number of images
+
+    Returns
+    -------
+    Plot of images
+    '''
+
     for i in range(clusters):
-        plot_three(x[np.random.choice(np.where(labels==i)[0], num, replace=False), :])
+        print('Cluster {}: {} Elements'.format(i, (labels==i).sum()))
+        plot_images(x[np.random.choice(np.where(labels==i)[0], n_images, replace=False), :], 'Cluster {}'.format(i))
 
 
 if __name__ == '__main__':
@@ -348,37 +456,46 @@ if __name__ == '__main__':
     #plot cnn architecture
     plot_model(cnn_model, show_shapes=True, to_file = 'model1.png')
 
+    #plot loss
+    loss_plot(cnn_model) #add plotname if want to save
+
     #plot reconstructed images
-    plot_reconstruction(x_test, restored_imgs, n=10)
+    plot_reconstruction(x_test, restored_imgs, n_images=10) #add plotname if want to save
 
     #plot encoded images
-    get_encoded_plot(cnn_model, x_train)
+    get_encoded_plot(cnn_model, x_train) #add plotname if want to save
 
     #plot attention model
-    attention_model(cnn_model, x_train, 3)
+    attention_model(cnn_model, x_train, 3) #add plotname if want to save
 
-    ########### KMeans ###########
+    ########### KMeans Clustering ###########
+
+    #elbow plot
+    elbow_plot(x_train, K=10) #add plotname if want to save
+
     n_clusters = 7
 
+    #cluster histogram
+    cluster_hist(train_labels, n_clusters)
+
+    #encoded and compress train, test, and validation images
     X_encoded_compressed_reshape = encoded_compressed(cnn_model, x_train)
     test_enc_compress = encoded_compressed(cnn_model, x_test)
     valid_enc_compress = encoded_compressed(cnn_model, x_valid)
 
+    #fit kMeans model and get labels
     km = KMeans(n_clusters=n_clusters)
     km.fit(X_encoded_compressed_reshape)
 
-    test_labels = km.predict(test_enc_compress)
     train_labels = km.labels_
+    test_labels = km.predict(test_enc_compress)
     valid_labels = km.predict(valid_enc_compress)
 
-    print("Test labels: {}".format(test_labels))
     print("Train labels: {}".format(train_labels))
+    print("Test labels: {}".format(test_labels))
     print("Valid labels: {}".format(valid_labels))
 
-    #plot images from each cluster
-    plot_images_from_cluster(x_train, n_clusters=7, train_labels)
-
     #plot from each cluster for comparison
-    plot_images(x_train, train_labels, 7, 9)
-    plot_images(x_test, test_labels, 7, 3)
-    plot_images(x_valid, valid_labels, 7, 1)
+    plot_clusters(x_train, train_labels, 7, 9)
+    plot_clusters(x_test, test_labels, 7, 3)
+    plot_clusters(x_valid, valid_labels, 7, 1)
