@@ -81,7 +81,7 @@ def get_encoded(model, x):
 
     Returns
     -------
-    3D numpy array, encoded sample with dimensions up to last conv layer in encoder (e.g., (386, 25, 25, 128))
+    4D numpy array, encoded sample with dimensions up to last conv layer in encoder (e.g., (386, 25, 25, 128))
     """
 
     get_encoded = K.function([model.layers[0].input], [model.layers[5].output])
@@ -249,7 +249,7 @@ def get_encoded_plot(model, x):
     Parameters
     ----------
     model: neural network with convolutional layer
-    x: images to be encoded
+    x: images to be encoded as 4D numpy array
 
     Returns
     -------
@@ -391,11 +391,13 @@ def plot_images(im_list, title):
     Parameters
     ----------
     im_list: images to plot
+    title: title of plot
 
     Returns
     -------
     Plot of images
     '''
+
     plt.figure(figsize=(14,4))
     for i, array in enumerate(im_list):
         plt.subplot(1, len(im_list), i+1)
@@ -409,8 +411,8 @@ def plot_clusters(x, labels, clusters, n_images):
 
     Parameters
     ----------
-    x: images to plot
-    labels: labels of images
+    x: images to plot as 4D numpy array
+    labels: labels of images from kMeans
     clusters: number of clusters
     n_images: number of images
 
