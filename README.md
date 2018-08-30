@@ -13,8 +13,8 @@ The ultimate goal of this project is to build a recommender that facilitates the
 For the first part of this project, I focused on florists with the goal of training a model to meaningfully cluster floral arrangements (bridal bouquets specifically).
 
 ## Data Collection:
-1. Images of bridal bouquets collected online from florists in Colorado (n = 387) - test set
-2. Images from Wedfuly florists (n = 115) - train set
+1. Images of bridal bouquets collected online from florists in Colorado (n = 387) - train set
+2. Images from Wedfuly florists (n = 115) - test set
 3. Unseen images collected online (n = 40) - validation set
 
 ## Image Processing Steps:
@@ -61,51 +61,47 @@ Next pool up to the last convolutional layer in the model. The images on the rig
 Clustering with KMeans - 7 was optimal k
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/elbow_plot.png)
 
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster_hist.png)
 
 ### Images from each cluster:
 
-#### Cluster 0: "Traditional" (75 images)
 
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster0.png)
-
-#### Cluster 1: "Moody and Dark" (38 images)
+#### Cluster 0: "Moody and Dark" (38 images)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster1.png)
 
-#### Cluster 2: "Light and Modern" (44 images)
+#### Cluster 1: "Earthy Modern" (55 images)
 
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster2.png)
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster6.png)
 
-#### Cluster 3: "Simply Minimal" (59 images)
+#### Cluster 2: "Simply Minimal" (59 images)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster3.png)
 
-#### Cluster 4: "Colorful and Bold" (52 images)
-
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster4.png)
-
-#### Cluster 5: "Moody and Wild" (63 images)
+#### Cluster 3: "Moody and Wild" (63 images)
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster5.png)
 
-#### Cluster 6: "Earthy Modern" (55 images)
+#### Cluster 4: "Traditional" (75 images)
 
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster6.png)
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster0.png)
+
+#### Cluster 5: "Light and Modern" (44 images)
+
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster2.png)
+
+
+#### Cluster 6: "Colorful and Bold" (52 images)
+
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster4.png)
+
+
+
+
 
 ## Evaluating the model
 To evaluate the model, I googled "bridal bouquet" and chose 40 of the top images to mimic the process of clients adding images to their Pinterest board.
 
-#### Cluster 0: "Traditional" (75 images)
-
-#### If you like this...
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster0.png)
-
-#### You might like these vendors...
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster0.png)
-___
-
-#### Cluster 1: "Moody and Dark" (38 images)
+#### Cluster 0: "Moody and Dark" (38 images)
 
 #### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster1.png)
@@ -114,25 +110,56 @@ ___
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster1.png)
 ___
 
-#### Cluster 2: "Light and Modern" (44 images)
+#### Cluster 1: "Earthy Modern" (55 images)
 
 #### If you like this...
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster2.png)
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster6.png)
 
 #### You might like these vendors...
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster2.png)
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster6.png)
 ___
 
-#### Cluster 3: "Simply Minimal" (59 images)
+
+#### Cluster 2: "Simply Minimal" (59 images)
 
 #### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster3.png)
 
 #### You might like these vendors...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster3.png)
+
+___
+#### Cluster 3: "Moody and Wild" (63 images)
+
+#### If you like this...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster5.png)
+
+#### You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster5.png)
+
 ___
 
-#### Cluster 4: "Colorful and Bold" (52 images)
+#### Cluster 4: "Traditional" (75 images)
+
+#### If you like this...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster0.png)
+
+#### You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster0.png)
+___
+
+
+#### Cluster 5: "Light and Modern" (44 images)
+
+#### If you like this...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster2.png)
+
+#### You might like these vendors...
+![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster2.png)
+
+___
+
+#### Cluster 6: "Colorful and Bold" (52 images)
 
 #### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster4.png)
@@ -141,23 +168,7 @@ ___
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster4.png)
 ___
 
-#### Cluster 5: "Moody and Wild" (63 images)
 
-#### If you like this...
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster5.png)
-
-#### You might like these vendors...
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster5.png)
-___
-
-#### Cluster 6: "Earthy Modern" (55 images)
-
-#### If you like this...
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster6.png)
-
-#### You might like these vendors...
-![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster6.png)
-___
 
 ## Conclusion
 Even with limited training images, a kMeans algorithm on top of a CNN autoencoder has potential to  cluster images for recommendation purposes.
