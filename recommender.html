@@ -1,0 +1,110 @@
+<style>
+
+  body{
+    background-image:url('http://s3.weddbook.com/t4/2/6/4/2649043/blush-pink-cream-green-wedding-bouquet-spring-bouquet-rustic-wedding-blush-wedding-flowers-roses-hydrangea-floral-bouquet.jpg');
+    width:100%;
+   background-size: cover;
+  }
+  @media only screen and (max-width: 600px) {
+      body {
+          background-size: auto;
+      }
+  }
+.main {
+background-color: rgba(255, 255, 255, 0.5);
+margin-top: 100px;
+padding-bottom: 50px;
+}
+.main h1 {
+font-size: 3.5em;
+font-family: sans-serif;
+color: black
+}
+.main h2 {
+font-size: 2em;
+font-family: sans-serif;
+color: black
+}
+.main h3 {
+font-size: 2em;
+font-family: sans-serif;
+color: black
+}
+.main p {
+font-size:1em;
+font-family: sans-serif;
+color: black
+}
+.buttons {
+display: flex;
+flex-wrap: nowrap;
+justify-content: center;
+}
+button {
+         padding: 1vh 2vw;
+         background-color: burlywood;
+         color: white;
+         border-radius: 16px;
+         border-color: white;
+         padding-left: 12px;
+         padding-right: 12px;
+         font-size: 16px;
+         font-weight: bold;
+     }
+     button:hover {
+         background-color: rgba(0,0,0,0);
+         color: burlywood;
+         border-color: burlywood;
+     }
+
+</style>
+
+
+<div class="main">
+  <div style="text-align:center">
+  <br><br>
+  <div class="starter-template">
+    <h1>Wedding Florist Recommender</h1>
+
+  </div>
+  <br><br>
+  <form action='/recommendations', method='GET'>
+    <div><h3><b>What is your budget?</b></h3></div>
+  <input type="text" name="total_price">
+
+
+    <div><h3><b>Where is your wedding?</b></h3></div>
+
+<select name="service" id="service" class="selectpicker form-control">
+      <option selected="selected" value = ''>Select Location</option>
+      <option value="Denver">Denver</option>
+      <option value="Boulder">Boulder</option>
+      <option value="Foothills">Foothills</option>
+      <option value="Summit County">Summit County</option>
+      <option value="Mountain Town Not Listed">Mountain Town Not Listed</option>
+      <option value="Other">Other</option>
+
+  </select>
+
+
+<div><h3><b>How would you like to receive your flowers?</b></h3></div>
+<select name="service" id="service" class="form-control form-control-selectpicker">
+    <option selected="selected" value = ''>Select Services</option>
+    <option value="Full Service">Delivery - Full Serivce</option>
+    <option value="Delivery/Dropoff(no_service)">Delivery/Drop-Off - No Service</option>
+    <option value="Pick Up">Pick Up</option>
+
+</select>
+
+  <div><h3><b>What services do you require?</b></h3></div>
+<input type="checkbox" name="ceremony_decor" value="ceremony_decor"> <b>Ceremony Decor</b><br>
+<input type="checkbox" name="reception_decor" value="reception_decor"> <b>Reception Decor</b><br>
+<input type="checkbox" name="handhelds" value="handhelds"> <b>Handhelds</b><br>
+
+  <div><h3><b>Select some images you like</b></h3></div>
+
+
+</form>
+
+  </div>
+</div>
