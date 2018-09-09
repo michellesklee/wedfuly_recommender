@@ -1,20 +1,32 @@
-![wedfuly](https://wedfuly.com/wp-content/uploads/2018/04/wedfuly.jpeg)
+![wedfuly](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/app_index.png)
 
-<h1 align="center"> Vendor Recommender for Wedfuly </h1>
+<h1 align="center"> Wedding Florist Recommender </h1>
 
 ___
 
+## Table of Contents
+**[Background](#background)**<br>
+**[Data Collection](#data-collection)**<br>
+**[Image Processing](#image-processing)**<br>
+**[Convolutional Autoencoder](#convolutional-autoencoder)**<br>
+**[k-Means Clustering](#k-means-clustering)**<br>
+**[Evaluating the Model](#evaluating-the-model)**<br>
+**[Building a Recommender](#building-a-recommender)**<br>
+**[Recommender Application](#recommender-application)**<br>
+**[Conclusion](#conclusion)**<br>
 
-On Wedfuly, clients work online with wedding planners who help with the planning process, including choosing wedding vendors such as florists, photographers, and bakeries.
+
+## Background
+On [Wedfuly](https://wedfuly.com/), clients work online with wedding planners who help with the planning process, including choosing wedding vendors such as florists, photographers, and bakeries.
 
 The goal of this project was to build a recommender that facilitates the process of wedding planners suggesting vendors to their clients. For the first part of this project, I focused on florists with the goal of training a model to meaningfully cluster floral arrangements (bridal bouquets specifically).
 
-## Data Collection:
+## Data Collection
 1. Images of bridal bouquets collected online from florists in Colorado (n = 387) - train set
 2. Images from Wedfuly florists (n = 115) - test set
 3. Unseen images collected online (n = 40) - validation set
 
-## Image Processing Steps:
+## Image Processing 
 1. Cropped bouquets from images
 2. Centered bouquets and cropped images to square
 3. Resized images to 100x100
@@ -54,7 +66,7 @@ Next pool up to the last convolutional layer in the model. The images on the rig
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/plot_with_attention.png)
 
-## Clustering - k-Means
+## k-Means Clustering
 Clustering with k-Means - 7 was optimal k
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/elbow_plot.png)
 
@@ -92,10 +104,7 @@ Clustering with k-Means - 7 was optimal k
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster4.png)
 
 
-
-
-
-## Evaluating the model
+## Evaluating the Model
 To evaluate the model, I googled "bridal bouquet" and chose 40 of the top images to mimic the process of clients adding images to their Pinterest board.
 
 #### Cluster 0: "Moody and Dark" (38 images)
@@ -181,8 +190,11 @@ k-Means cluster labels became a feature of an overall model that also included t
 #### Distance Metric
 As clients enter specifics of their wedding as well as select images that match their style, *cosine similarity* will be calculated to find the vendor that has provided wedding services that are most similar to the clients needs.
 
-## Building a Recommender Application 
+## Recommender Application 
 A [recommender application](http://54.164.157.103:8080/) built on Flask and Docker and hosted on Amazon Web Services allows clients and wedding planners to enter specifics of their wedding and select images to recommend vendors. 
+
+![app](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/app_recommender1.png)
+![app](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/app_recommender2.png)
 
 ## Conclusion
 Even with limited training images, a k-Means algorithm on top of a CNN autoencoder has potential to  cluster images for recommendation purposes. Using k-Means cluster labels in addition to features related to the wedding provides a more robust recommender system that takes into account the specifics of the wedding as well as clients' style.
