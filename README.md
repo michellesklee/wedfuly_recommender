@@ -1,16 +1,13 @@
 ![wedfuly](https://wedfuly.com/wp-content/uploads/2018/04/wedfuly.jpeg)
 
 <h1 align="center"> Vendor Recommender for Wedfuly </h1>
-<h4 align="center"> Part I: Cluster Florists with CNN Autoencoder + KMeans </h4>
 
 ___
 
 
 On Wedfuly, clients work online with wedding planners who help with the planning process, including choosing wedding vendors such as florists, photographers, and bakeries.
 
-The ultimate goal of this project is to build a recommender that facilitates the process of wedding planners suggesting vendors to their clients.
-
-For the first part of this project, I focused on florists with the goal of training a model to meaningfully cluster floral arrangements (bridal bouquets specifically).
+The goal of this project was to build a recommender that facilitates the process of wedding planners suggesting vendors to their clients. For the first part of this project, I focused on florists with the goal of training a model to meaningfully cluster floral arrangements (bridal bouquets specifically).
 
 ## Data Collection:
 1. Images of bridal bouquets collected online from florists in Colorado (n = 387) - train set
@@ -57,8 +54,8 @@ Next pool up to the last convolutional layer in the model. The images on the rig
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/plot_with_attention.png)
 
-## Clustering - KMeans
-Clustering with KMeans - 7 was optimal k
+## Clustering - k-Means
+Clustering with k-Means - 7 was optimal k
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/elbow_plot.png)
 
 
@@ -169,15 +166,32 @@ ___
 ___
 
 
+## Building a Recommender
+k-Means cluster labels became a feature of an overall model that also included the following features:
+
+#### Continuous Variables:
+1. Total price 
+2. Location of wedding - Boulder, Denver, Foothills, Summit County, Mountain Town Not Listed, Other
+
+#### Categorical Variables (dummy coded):
+3. Method of delivery - Delivery (full service), Delivery (no service)/Drop-off, or Pick-up
+4. Services provided - Ceremony Decor, Reception Decor, and/or Handhelds
+5. Size of wedding
+
+#### Distance Metric
+As clients enter specifics of their wedding as well as select images that match their style, *cosine similarity* will be calculated to find the vendor that has provided wedding services that are most similar to the clients needs.
+
+## Building a Recommender Application 
+A [recommender application](http://54.164.157.103:8080/) built on Flask and Docker and hosted on Amazon Web Services allows clients and wedding planners to enter specifics of their wedding and select images to recommend vendors. 
 
 ## Conclusion
-Even with limited training images, a kMeans algorithm on top of a CNN autoencoder has potential to  cluster images for recommendation purposes.
+Even with limited training images, a k-Means algorithm on top of a CNN autoencoder has potential to  cluster images for recommendation purposes. Using k-Means cluster labels in addition to features related to the wedding provides a more robust recommender system that takes into account the specifics of the wedding as well as clients' style.
 
 ## Next Steps:
-1. Include survey data in algorithm (e.g., budget)
-2. Extend to other vendors(e.g., photographers)
-3. Train a neural network to detect bouquets in images
-4. Started working with a pre-trained model (VGG-19) for feature extraction - may be worth exploring
+1. As Wedfuly grows and more data is collected, the recommender will be further fine tuned and validated
+2. The model will eventually extend to other vendors(e.g., photographers)
+3. While manually cropping bouquets was sufficient for this initial model, in the future, training a neural network to detect bouquets may be worth exploring
+4. Using transfer learning such as XCeption may also be considered in the future to detect features in images
 
 
 ## References
