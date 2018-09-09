@@ -1,0 +1,288 @@
+<style>
+
+  body{
+    background-image:url('http://s3.weddbook.com/t4/2/6/4/2649043/blush-pink-cream-green-wedding-bouquet-spring-bouquet-rustic-wedding-blush-wedding-flowers-roses-hydrangea-floral-bouquet.jpg');
+    width:100%;
+    background-size: cover;
+  }
+  @media only screen and (max-width: 600px) {
+      body {
+          background-size: auto;
+      }
+  }
+
+  @font-face {
+    font-family: Cabin;
+    src: url(static/fonts/cabin-regular-webfont.woff);
+}
+
+
+.main {
+background-color: rgba(255, 255, 255, 0.5);
+margin-top: 100px;
+padding-bottom: 50px;
+}
+.main h1 {
+font-size: 3.5em;
+font-family: Cabin;
+color: #2E3759;
+}
+.main h2 {
+font-size: 2em;
+font-family: Cabin;
+color: #2E3759;
+}
+.main h3 {
+font-size: 2em;
+font-family: Cabin;
+color: #2E3759;
+}
+.main p {
+font-size:1em;
+font-family: Cabin;
+color: #2E3759;
+}
+.buttons {
+display: flex;
+flex-wrap: nowrap;
+justify-content: center;
+}
+.input {
+  font-size:1.50em;
+  font-family: Cabin;
+  color: #2E3759;
+}
+button {
+         padding: 1vh 2vw;
+         background-color: #2E3759;
+         color: white;
+         border-radius: 16px;
+         border-color: white;
+         padding-left: 12px;
+         padding-right: 12px;
+         font-size: 24px;
+         font-weight: bold;
+     }
+button:hover {
+         background-color: rgba(0,0,0,0);
+         color: #2E3759;
+         border-color: #2E3759;
+}
+
+input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  border-bottom: 1px solid black;
+}
+
+select {
+  font-size: 1.3em;
+  padding:10px;
+  -webkit-appearance: push-button;
+         -moz-appearance: none;
+          appearance: none;
+          margin: 10px;
+          background-color: #DEDDDA;
+          color: #DF611F;
+          outline: none;
+          border: none;
+        }
+
+hr{
+  border: 0;
+    height: 3px;
+    background: #DEDDDA;
+}
+
+.submit{
+  font-size: 2em;
+  border-color: #345863;
+  background: #345863;
+  border-radius: 6px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font: Cabin;
+  color: white;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  display: inline-block;
+}
+
+input[type="checkbox"][id^="cb"] {
+  display: none;
+}
+
+label {
+  border: 1px solid #fff;
+  padding: 10px;
+  display: block;
+  position: relative;
+  margin: 10px;
+  cursor: pointer;
+}
+
+label:before {
+  background-color: white;
+  color: white;
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  border: 1px solid grey;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 28px;
+  transition-duration: 0.4s;
+  transform: scale(0);
+}
+
+label img {
+  height: 100px;
+  width: 100px;
+  transition-duration: 0.2s;
+  transform-origin: 50% 50%;
+}
+
+:checked + label {
+  border-color: #ddd;
+}
+
+:checked + label:before {
+  content: "✓";
+  background-color: grey;
+  transform: scale(1);
+}
+
+:checked + label img {
+  transform: scale(0.9);
+  box-shadow: 0 0 5px #333;
+  z-index: -1;
+}
+
+</style>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta content="IE=edgechrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=1" name="viewport" />
+
+    <link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/favicons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+    <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/6563636/6910192/css/fonts.css" />
+
+<div class="overlay">
+
+</div>
+    <!-- Copyright Feiern LLC 2017-present -->
+
+    <title>Wedfuly Recommender</title>
+
+  </head>
+  <body>
+
+<div class="main">
+  <div style="text-align:center">
+    <br><br>
+  <img src="static/img/W_logo.png" style="width: 15%">
+    <div class="starter-template">
+      <h1>Wedding Florist Recommender</h1>
+
+    </div>
+  <br><br>
+<form action='/recommendations', method='POST'>
+
+
+  <div><h3>What is your budget?</h3></div>
+  <p>
+    <input class="input" type="number" name="total_price">
+  </p>
+  <br><br>
+
+  <div><h3>What services do you require?</h3></div>
+  <div class="input">
+    <input type="checkbox" name="ceremony_decor" value="ceremony_decor"> <b>Ceremony Decor</b><br>
+    <input type="checkbox" name="reception_decor" value="reception_decor"> <b>Reception Decor</b><br>
+    <input type="checkbox" name="handhelds" value="handhelds"> <b>Handhelds</b><br>
+  </div>
+  <br><br>
+
+  <div><h3>What is the size of your wedding?</h3></div>
+  <p>
+    <input class="input" type="number" name="size_of_wedding">
+  </p>
+  <br><br>
+
+  <div ><h3>Where is your wedding?</h3></div>
+  <select name="location" id="location" class="selectpicker form-control">
+      <option selected="selected" value = ''>Select Location</option>
+      <option value="location_Boulder">Boulder</option>
+      <option value="location_Denver">Denver</option>
+      <option value="location_FootHills">Foothills</option>
+      <option value="location_Mountain_town_not_listed">Mountain Town Not Listed</option>
+      <option value="location_Other">Other</option>
+      <option value="location_Summit_County">Summit County</option>
+  </select>
+  <br><br>
+
+  <div><h3>How would you like to receive your flowers?</h3></div>
+  <select name="service" id="service" class="form-control form-control-selectpicker">
+      <option selected="selected" value = ''>Select Services</option>
+      <option value="service_Delivery_no_service">Delivery/Drop-Off - No Service</option>
+      <option value="service_full_service">Delivery - Full Serivce</option>
+      <option value="service_Pickup">Pick Up</option>
+
+  </select>`
+  <br><br>
+
+<div><h3>Select some images you like</h3></div>
+<div>
+  <ul>
+    <li><input type="checkbox" id="cluster0" />
+      <label for="cluster0"><img src="static/img/valid_0.png" width="400" height=auto /></label>
+    </li>
+    <li><input type="checkbox" id="cluster1" />
+      <label for="cluster1"><img src="static/img/valid_1.png" width="400" height=auto /></label>
+    </li>
+    <li><input type="checkbox" id="cluster2" />
+      <label for="cluster2"><img src="static/img/valid_2.png" width="400" height=auto /></label>
+    </li>
+    <li><input type="checkbox" id="cluster3" />
+      <label for="cluster3"><img src="static/img/valid_3.png" width="400" height=auto /></label>
+    <li><input type="checkbox" id="cluster4" />
+      <label for="cluster4"><img src="static/img/valid_4.png" width="400" height=auto /></label>
+    </li>
+    <li><input type="checkbox" id="cluster5" />
+      <label for="cluster5"><img src="static/img/valid_5.png" width="400" height=auto /></label>
+    </li>
+    <li><input type="checkbox" id="cluster6" />
+      <label for="cluster6"><img src="static/img/valid_6.png" width="400" height=auto /></label>
+    </li>
+
+  </ul>
+</div>
+
+  <br><br><br>
+  <!-- <input class="submit" type="submit" value="Find my florist!"> -->
+  <button type="submit">Find my florist!</button>
+</form>
+<!-- <input class="submit" type="submit" value="Find my florist!">
+</form> -->
+
+  </div>
+</div>
+</body>

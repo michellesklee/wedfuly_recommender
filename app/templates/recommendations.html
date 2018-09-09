@@ -1,0 +1,151 @@
+<style>
+
+  body{
+    background-image:url('http://s3.weddbook.com/t4/2/6/4/2649043/blush-pink-cream-green-wedding-bouquet-spring-bouquet-rustic-wedding-blush-wedding-flowers-roses-hydrangea-floral-bouquet.jpg');
+    width:100%;
+    background-size: cover;
+  }
+  @media only screen and (max-width: 600px) {
+      body {
+          background-size: auto;
+      }
+  }
+
+  @font-face {
+    font-family: Cabin;
+    src: url(static/fonts/cabin-regular-webfont.woff);
+}
+
+
+.main {
+background-color: rgba(255, 255, 255, 0.5);
+margin-top: 100px;
+padding-bottom: 50px;
+}
+.main h1 {
+font-size: 3.5em;
+font-family: Cabin;
+color: #2E3759;
+}
+.main h2 {
+font-size: 2em;
+font-family: Cabin;
+color: #2E3759;
+}
+.main h3 {
+font-size: 2em;
+font-family: Cabin;
+color: #2E3759;
+}
+.main p {
+font-size:1em;
+font-family: Cabin;
+color: #2E3759;
+}
+.buttons {
+display: flex;
+flex-wrap: nowrap;
+justify-content: center;
+}
+.input {
+  font-size:1.50em;
+  font-family: Cabin;
+  color: #2E3759;
+}
+button {
+         padding: 1vh 2vw;
+         background-color: burlywood;
+         color: white;
+         border-radius: 16px;
+         border-color: white;
+         padding-left: 12px;
+         padding-right: 12px;
+         font-size: 16px;
+         font-weight: bold;
+     }
+button:hover {
+         background-color: rgba(0,0,0,0);
+         color: burlywood;
+         border-color: burlywood;
+}
+
+input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  border-bottom: 1px solid black;
+}
+
+select {
+  font-size: 1.3em;
+  padding:10px;
+  -webkit-appearance: push-button;
+         -moz-appearance: none;
+          appearance: none;
+          margin: 10px;
+          background-color: #DEDDDA;
+          color: #DF611F;
+          outline: none;
+          border: none;
+        }
+
+hr{
+  border: 0;
+    height: 3px;
+    background: #DEDDDA;
+}
+
+.submit{
+  font-size: 2em;
+  border-color: #345863;
+  background: #345863;
+  border-radius: 6px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font: Cabin;
+  color: white;
+
+}
+
+</style>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta content="IE=edgechrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=1" name="viewport" />
+
+    <link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/favicons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+    <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/6563636/6910192/css/fonts.css" />
+
+<div class="overlay">
+
+</div>
+<title>Wedfuly Recommender</title>
+</head>
+<body>
+<div class="main">
+  <div style="text-align:center">
+  <br><br>
+  <div class="starter-template">
+    <h1>Wedding Florist Recommender</h1>
+<br><br>
+<h3>You might like this florist!</h3>
+  {% for x in cos_sims %}
+  <div>
+    <a href="{{ florist_info[x]['link'] }}">
+    <img src="{{ florist_info[x]['img_src'] }}"></a>
+  </div>
+  {% endfor %}
+
+
+
+
+</div></div></div>
+</body>
