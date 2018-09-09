@@ -1,7 +1,5 @@
 ![wedfuly](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/app_index.png)
 
-<h1 align="center"> Wedding Florist Recommender </h1>
-
 ___
 
 ## Table of Contents
@@ -14,6 +12,9 @@ ___
 **[Building a Recommender](#building-a-recommender)**<br>
 **[Recommender Application](#recommender-application)**<br>
 **[Conclusion](#conclusion)**<br>
+**[Next Steps](#next-steps)**<br>
+**[Tech Stack](#tech-stack)**<br>
+
 
 
 ## Background
@@ -199,16 +200,13 @@ A [recommender application](http://54.164.157.103:8080/) built on Flask and Dock
 ## Conclusion
 Even with limited training images, a k-Means algorithm on top of a CNN autoencoder has potential to  cluster images for recommendation purposes. Using k-Means cluster labels in addition to features related to the wedding provides a more robust recommender system that takes into account the specifics of the wedding as well as clients' style.
 
-## Next Steps:
+## Next Steps
 1. As Wedfuly grows and more data is collected, the recommender will be further fine tuned and validated
 2. The model will eventually extend to other vendors(e.g., photographers)
 3. While manually cropping bouquets was sufficient for this initial model, in the future, training a neural network to detect bouquets may be worth exploring
 4. Using transfer learning such as XCeption may also be considered in the future to detect features in images
 
+## Tech Stack
+![tech_stack](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/tech_stack.png)
 
-## References
-Wedfuly: https://wedfuly.com/
 
-Convolutional autoencoder image: https://cdn-images-1.medium.com/max/1818/1*8ixTe1VHLsmKB3AquWdxpQ.png
-
-Clustering with autoencoders and attention maps: http://maxcalabro.com/clustering-images-with-autoencoders-and-attention-maps/
