@@ -23,15 +23,14 @@ On [Wedfuly](https://wedfuly.com/), clients work online with wedding planners wh
 The goal of this project was to build a recommender that facilitates the process of wedding planners suggesting vendors to their clients. For the first part of this project, I focused on florists with the goal of training a model to meaningfully cluster floral arrangements (bridal bouquets specifically).
 
 ## Data Collection
-1. Images of bridal bouquets collected online from florists in Colorado (n = 387) - train set
-2. Images from Wedfuly florists (n = 115) - test set
-3. Unseen images collected online (n = 40) - validation set
+Images of bridal bouquets collected online (train set: 2897, test set: 637)
 
 ## Image Processing 
 1. Cropped bouquets from images
 2. Centered bouquets and cropped images to square
 3. Resized images to 100x100
 4. Converted to RGB
+5. Augmentation: LR, UD
 
 ## Convolutional Autoencoder
 
