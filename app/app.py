@@ -69,12 +69,12 @@ def recommendations():
     vendors.columns = vendor_cols_final
 
     def assign_clusters(row):
-        florist_clusters = {'Flora_by_Nora':[0,2,4],
-                'Madelyn_Claire_Floral_Design_&_Events': [3, 0, 1],
-                'Little_Shop_of_Floral': [1, 3, 4],
-                'Lumme_Creations': [6, 1, 2],
-                'Rooted': [6, 4, 5],
-                'Blush_&_Bay': [2,0,4]}
+        florist_clusters = {'Flora_by_Nora':[5,6,3],
+                'Madelyn_Claire_Floral_Design_&_Events': [4,0,3],
+                'Little_Shop_of_Floral': [4,0,6],
+                'Lumme_Creations': [4,5,6],
+                'Rooted': [3,5,6],
+                'Blush_&_Bay': [4,0,2]}
         cluster0, cluster1, cluster2, cluster3, cluster4, cluster5, cluster6 = 0,0,0,0,0,0,0
         if 0 in florist_clusters[row['company_name']]:
             cluster0 = 1
@@ -102,7 +102,7 @@ def recommendations():
     vendors_merged = pd.concat([vendors, vendors_clusters], axis=1)
 
     #Fill in 0 for Rooted NAs for now
-    vendors_merged.fillna(0, inplace=True)
+    # vendors_merged.fillna(0, inplace=True)
 
     features = ['total_price',
                 'ceremony_decor',
@@ -127,8 +127,8 @@ def recommendations():
                 'cluster6']
 
     X = vendors_merged[features].values
-    ss = StandardScaler()
-    X = ss.fit_transform(X)
+    ss = StandardScaler().fit(X)
+    X = ss.transform(X)
 
     total_price = float(request.form['total_price'])
 
@@ -157,6 +157,7 @@ def recommendations():
         location_Summit_County = 1
 
 
+
     service_Delivery_no_service, service_full_service, service_Pickup = 0,0,0
     if request.form['service'] == 'service_Delivery_no_service':
         service_Delivery_no_service = 1
@@ -182,7 +183,7 @@ def recommendations():
     if 'cluster6' in request.form.keys():
         cluster6 = 1
 
-    example = pd.DataFrame({
+    input_data = pd.DataFrame({
                         'total_price':total_price,
                         'ceremony_decor':ceremony_decor,
                         'reception_decor':reception_decor,
@@ -196,13 +197,24 @@ def recommendations():
                         'location_Summit_County':location_Summit_County,
                         'service_Delivery_no_service':service_Delivery_no_service,
                         'service_full_service':service_full_service,
-                        'service_Pickup':service_Pickup, 'cluster0':cluster0, 'cluster1':cluster1, 'cluster2':cluster2, 'cluster3':cluster3, 'cluster4':cluster4, 'cluster5':cluster5, 'cluster6':cluster6}, index=[0])
+                        'service_Pickup':service_Pickup,
+                        'cluster0':cluster0,
+                        'cluster1':cluster1,
+                        'cluster2':cluster2,
+                        'cluster3':cluster3,
+                        'cluster4':cluster4,
+                        'cluster5':cluster5,
+                        'cluster6':cluster6}, index=[0])
+
     index_name = vendors_merged['company_name']
-    cos_sims = cos_sim_recommendations(example, X, index_name, n=1)
+    survey_data = input_data.values
+    survey_data = ss.transform(survey_data)
+
+    weights = np.array([5, 3, 3, 3, 1, 6, 6, 6, 6, 6, 6, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4])
+
+    cos_sims = cos_sim_recommendations(survey_data*weights, X*weights, index_name, n=2)
 
     florist_info = {
-    'Flora_by_Nora':
-        {'name':'Flora by Nora', 'img_src':'/static/img/flora_by_nora.png', 'link':'https://www.florabynora.com/'},
     'Madelyn_Claire_Floral_Design_&_Events':
         {'name':'Madlyn Claire Floral Design', 'img_src':'/static/img/madelyn_claire.png', 'link':'https://madelynclairefloraldesign.com/'},
     'Little_Shop_of_Floral':
@@ -212,7 +224,9 @@ def recommendations():
     'Rooted':
         {'name':'Rooted Floral and Design', 'img_src':'/static/img/rooted.png', 'link':'https://www.rootedfloralanddesign.com/'},
     'Blush_&_Bay':
-        {'name':'Blush and Bay', 'img_src':'/static/img/blush_and_bay.png', 'link':'http://www.blushandbay.com/'}}
+        {'name':'Blush and Bay', 'img_src':'/static/img/blush_and_bay.png', 'link':'http://www.blushandbay.com/'},
+    'Flora_by_Nora':
+        {'name':'Flora by Nora', 'img_src':'/static/img/flora_by_nora.png', 'link':'https://www.florabynora.com/'}}
 
 
     return render_template('recommendations.html', cos_sims = cos_sims, florist_info = florist_info)
