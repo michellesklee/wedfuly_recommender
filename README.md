@@ -5,7 +5,7 @@ ___
 ## Table of Contents
 **[Background](#background)**<br>
 **[Data Collection](#data-collection)**<br>
-**[Image Processing](#image-processing)**<br>
+**[Florist Image Processing](#image-processing)**<br>
 **[Convolutional Autoencoder](#convolutional-autoencoder)**<br>
 **[k-Means Clustering](#k-means-clustering)**<br>
 **[Evaluating the Model](#evaluating-the-model)**<br>
@@ -20,12 +20,13 @@ ___
 ## Background
 On [Wedfuly](https://wedfuly.com/), clients work online with wedding planners who help with the planning process, including choosing wedding vendors such as florists, photographers, and bakeries.
 
-The goal of this project was to build a recommender that facilitates the process of wedding planners suggesting vendors to their clients. For the first part of this project, I focused on florists with the goal of training a model to meaningfully cluster floral arrangements (bridal bouquets specifically).
+The goal of this project was to build a recommender that facilitates the process of wedding planners suggesting vendors to their clients. For the first part of this project, I focused on florists with the goal of training a model to meaningfully cluster floral arrangements (bridal bouquets specifically). As a second step, I built a similar recommender for photographers using pre-labeled images of Wedfuly photographers.
 
 ## Data Collection
 Images of bridal bouquets collected online (train set: 2897, test set: 637)
+Images from Wedfuly wedding photographers (~1200)
 
-## Image Processing 
+## Florist Image Processing 
 1. Cropped bouquets from images
 2. Centered bouquets and cropped images to square
 3. Resized images to 100x100
@@ -104,7 +105,7 @@ Clustering with k-Means - 7 was optimal k
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster4.png)
 
 
-## Evaluating the Model
+## Evaluating the Model - Florists
 To evaluate the model, I googled "bridal bouquet" and chose 40 of the top images to mimic the process of clients adding images to their Pinterest board.
 
 #### Cluster 0: "Moody and Dark" (38 images)
@@ -174,7 +175,6 @@ ___
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster4.png)
 ___
 
-
 ## Building a Recommender
 k-Means cluster labels became a feature of an overall model that also included the following features:
 
@@ -191,7 +191,7 @@ k-Means cluster labels became a feature of an overall model that also included t
 As clients enter specifics of their wedding as well as select images that match their style, *cosine similarity* will be calculated to find the vendor that has provided wedding services that are most similar to the clients needs.
 
 ## Recommender Application 
-A [recommender application](http://54.164.157.103:8080/) built on Flask and Docker and hosted on Amazon Web Services allows clients and wedding planners to enter specifics of their wedding and select images to recommend vendors. 
+A [recommender application](http://54.242.37.247:8080/) built on Flask and Docker and hosted on Amazon Web Services allows clients and wedding planners to enter specifics of their wedding and select images to recommend vendors. 
 
 ![app](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/app_recommender1.png)
 ![app](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/app_recommender2.png)
@@ -201,9 +201,8 @@ Even with limited training images, a k-Means algorithm on top of a CNN autoencod
 
 ## Next Steps
 1. As Wedfuly grows and more data is collected, the recommender will be further fine tuned and validated
-2. The model will eventually extend to other vendors(e.g., photographers)
-3. While manually cropping bouquets was sufficient for this initial model, in the future, training a neural network to detect bouquets may be worth exploring
-4. Using transfer learning such as XCeption may also be considered in the future to detect features in images
+2. While manually cropping bouquets was sufficient for this initial model, in the future, training a neural network to detect bouquets may be worth exploring
+3. Using transfer learning such as XCeption may also be considered in the future to detect features in images
 
 ## Tech Stack
 ![tech_stack](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/tech_stack.png)
