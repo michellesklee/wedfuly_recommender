@@ -75,32 +75,32 @@ Clustering with k-Means - 7 was optimal k
 ### Images from each cluster:
 
 
-#### Cluster 0: "Moody and Dark" (38 images)
+#### Cluster 0: "Moody and Dark"
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster1.png)
 
-#### Cluster 1: "Earthy Modern" (55 images)
+#### Cluster 1: "Earthy Modern"
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster6.png)
 
-#### Cluster 2: "Simply Minimal" (59 images)
+#### Cluster 2: "Simply Minimal" 
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster3.png)
 
-#### Cluster 3: "Moody and Wild" (63 images)
+#### Cluster 3: "Moody and Wild" 
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster5.png)
 
-#### Cluster 4: "Traditional" (75 images)
+#### Cluster 4: "Traditional" 
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster0.png)
 
-#### Cluster 5: "Light and Modern" (44 images)
+#### Cluster 5: "Light and Modern"
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster2.png)
 
 
-#### Cluster 6: "Colorful and Bold" (52 images)
+#### Cluster 6: "Colorful and Bold" 
 
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/cluster4.png)
 
@@ -108,7 +108,7 @@ Clustering with k-Means - 7 was optimal k
 ## Evaluating the Model - Florists
 To evaluate the model, I googled "bridal bouquet" and chose 40 of the top images to mimic the process of clients adding images to their Pinterest board.
 
-#### Cluster 0: "Moody and Dark" (38 images)
+#### Cluster 0: "Moody and Dark" 
 
 #### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster1.png)
@@ -117,7 +117,7 @@ To evaluate the model, I googled "bridal bouquet" and chose 40 of the top images
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster1.png)
 ___
 
-#### Cluster 1: "Earthy Modern" (55 images)
+#### Cluster 1: "Earthy Modern" 
 
 #### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster6.png)
@@ -127,7 +127,7 @@ ___
 ___
 
 
-#### Cluster 2: "Simply Minimal" (59 images)
+#### Cluster 2: "Simply Minimal" 
 
 #### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster3.png)
@@ -136,7 +136,7 @@ ___
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/test_cluster3.png)
 
 ___
-#### Cluster 3: "Moody and Wild" (63 images)
+#### Cluster 3: "Moody and Wild" 
 
 #### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster5.png)
@@ -146,7 +146,7 @@ ___
 
 ___
 
-#### Cluster 4: "Traditional" (75 images)
+#### Cluster 4: "Traditional"
 
 #### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster0.png)
@@ -156,7 +156,7 @@ ___
 ___
 
 
-#### Cluster 5: "Light and Modern" (44 images)
+#### Cluster 5: "Light and Modern" 
 
 #### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster2.png)
@@ -166,7 +166,7 @@ ___
 
 ___
 
-#### Cluster 6: "Colorful and Bold" (52 images)
+#### Cluster 6: "Colorful and Bold" 
 
 #### If you like this...
 ![](https://github.com/michellesklee/wedfuly_recommender/blob/master/figures/valid_cluster4.png)
