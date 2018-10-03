@@ -26,7 +26,7 @@ def square_crop(image):
         cropped = image[:width, :]
     return cropped.shape
 
-def resize_img(img_root, target_root, new_size, border_size, border_color):
+def process_img(img_root, target_root, new_size, border_size, border_color):
     """Resizes image, adds border, and changes color channel
 
     Parameters
@@ -58,8 +58,22 @@ def resize_img(img_root, target_root, new_size, border_size, border_color):
         #color channel
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) #or HSV
 
-        cv2.imwrite('{}/{}'.format(target_root, file), img)
+        cv2.imwrite('{}{}'.format(target_root, file), img)
 
+def img_aug(img_root, target_root):
+    files = [f for f in listdir(img_root) if isfile(join(img_root, f))]
+
+    for file in files:
+        img = cv2.imread('{}{}'.format(img_root, file))
+        if len(img.shape) < 2:
+            pass
+        elif img.dtype != 'uint8':
+            pass
+        else:
+            img_lr = np.fliplr(img)
+            img_ud = np.flipud(img)
+            cv2.imwrite('{}{}{}'.format(target_root, file, '_lr'), img_lr)
+            cv2.imwrite('{}{}{}'.format(target_root, file, '_ud'), img_ud)
 
 def train_test_split(target_root, split=.20):
     """Splits data
@@ -77,9 +91,9 @@ def train_test_split(target_root, split=.20):
 
     train_path = target_root + 'train/'
     test_path = target_root + 'test/'
-    valid_path = target_root + 'valid/'
-    # mkdir(train_path)
-    # mkdir(test_path)
+    #valid_path = target_root + 'valid/'
+    mkdir(train_path)
+    mkdir(test_path)
     # mkdir(valid_path)
 
     test_files = np.random.choice(files, int(split*len(files)))
@@ -90,10 +104,16 @@ def train_test_split(target_root, split=.20):
         copyfile(target_root + file, train_path + file)
 
 if __name__ == '__main__':
-    # img_root = 'images/'
-    img_root = '../images/vendors/'
-    # target_root = 'thumbnails/'
-    target_root = '../thumbnails/test/'
 
-    #train_test_split(target_root) #for some reason have to run this twice commenting out the mkdir
-    resize_img(img_root, target_root, new_size=(100, 100), border_size=20, border_color=[0,0,0])
+    #img_root = 'blush_and_bay/'
+    img_root = 'thumbnails/blush_and_bay/'
+    # img_root = '../images/vendors/rooted/'
+    target_root = 'thumbnails/blush_and_bay/'
+
+    train_test_split(target_root) #may have to run this twice commenting out the mkdir
+    process_img(img_root, target_root, new_size=(100, 100), border_size=20, border_color=[0,0,0])
+    img_aug(img_root, target_root)
+
+#rm '.DS_Store'
+#rename -s .jpg_lr _lr.jpg *.jpg_lr
+#rename -s .jpg_ud _ud.jpg *.jpg_ud

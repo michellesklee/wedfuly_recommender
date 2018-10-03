@@ -1,5 +1,6 @@
 import cv2
 import glob
+import pickle
 from PIL import Image
 import numpy as np
 from os import listdir, mkdir
@@ -7,7 +8,7 @@ from os.path import isfile, join
 import matplotlib.pyplot as plt
 from keras import backend as K
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
-from keras.models import Model, Sequential
+from keras.models import Model, Sequential, load_model
 from keras.layers import Dense, Dropout, Activation, Flatten, Input, UpSampling2D, Convolution2D, MaxPooling2D, GlobalMaxPooling2D, GlobalAveragePooling2D
 from keras.layers.convolutional import Conv2D, ZeroPadding2D
 from keras.utils import np_utils, layer_utils
@@ -15,6 +16,15 @@ from keras.optimizers import RMSprop
 from keras.utils.data_utils import get_file
 from keras.utils.vis_utils import plot_model
 from sklearn.cluster import KMeans
+from matplotlib import style
+
+style.use('ggplot')
+import matplotlib
+font = {'family' : 'DejaVu Sans',
+        'weight' : 'normal',
+        'size'   : 20}
+matplotlib.rc('font', **font)
+
 
 def cnn_autoencoder(input_img):
     """CNN Autoencoder
@@ -129,7 +139,7 @@ def pool_encoded(model, x):
         i+=1
         print('Running batch... {}'.format(i*len(batch)))
         #runs pooling function on the model for each batch.
-        X_encoded.append(pool_conv_layer(model, x_train))
+        X_encoded.append(pool_conv_layer(model, x))
 
     X_encoded = np.concatenate(X_encoded)
     #np.save('X_encoded.npy', X_encoded)
@@ -243,7 +253,7 @@ def plot_reconstruction(x_orig, x_recon, n_images=10, plotname=None):
     else:
         plt.show()
 
-def get_encoded_plot(model, x):
+def get_encoded_plot(model, x, plotname=None):
     """Visualize the model after pooling up to last convolutional layer to see where the model is paying most attention
 
     Parameters
@@ -273,6 +283,9 @@ def get_encoded_plot(model, x):
         plt.axis('off')
         plt.title('Encoded Max')
 
+    if plotname:
+        plt.savefig(plotname)
+    else:
         plt.show()
 
 def attention_model(model, x, n_images, last_conv_layer=4, plotname=None):
@@ -398,12 +411,13 @@ def plot_images(im_list, title):
     Plot of images
     '''
 
-    plt.figure(figsize=(14,4))
+    plt.figure(figsize=(4,4))
     for i, array in enumerate(im_list):
         plt.subplot(1, len(im_list), i+1)
         plt.imshow(array[:,:,::-1])
         plt.axis('off')
     plt.title(title)
+    plt.savefig('clusters.png')
     plt.show()
 
 def plot_clusters(x, labels, clusters, n_images):
@@ -414,7 +428,7 @@ def plot_clusters(x, labels, clusters, n_images):
     x: images to plot as 4D numpy array
     labels: labels of images from kMeans
     clusters: number of clusters
-    n_images: number of images
+    n_images: number of im)ages
 
     Returns
     -------
@@ -427,23 +441,27 @@ def plot_clusters(x, labels, clusters, n_images):
 
 
 if __name__ == '__main__':
-    train_files = glob.glob('../thumbnails/train/*.jpg')
+    #run from main directory
+
+    train_files = glob.glob('thumbnails/train/*.jpg')
+        # train_files = [w.replace('../thumbnails/train/', '') for w in train_files]
+
     x_train = np.array([np.array(Image.open(fname)) for fname in train_files])
     x_train = x_train.reshape(-1, 100, 100, 3)
     x_train = x_train / np.max(x_train)
 
-    test_files = glob.glob('../thumbnails/test/*.jpg')
+    test_files = glob.glob('thumbnails/test/*.jpg')
     x_test = np.array([np.array(Image.open(fname)) for fname in test_files])
     x_test = x_test.reshape(-1, 100, 100, 3)
     x_test = x_test / np.max(x_test)
 
-    valid_files = glob.glob('../thumbnails/valid/*.jpg')
-    x_valid = np.array([np.array(Image.open(fname)) for fname in valid_files])
-    x_valid = x_valid.reshape(-1, 100, 100, 3)
-    x_valid = x_valid / np.max(x_valid)
+    # valid_files = glob.glob('../thumbnails/valid/*.jpg')
+    # x_valid = np.array([np.array(Image.open(fname)) for fname in valid_files])
+    # x_valid = x_valid.reshape(-1, 100, 100, 3)
+    # x_valid = x_valid / np.max(x_valid)
 
     batch_size = 128
-    epochs = 10
+    epochs = 30
     inChannel = 3
     x, y = 100, 100
     input_img = Input(shape = (x, y, inChannel))
@@ -453,51 +471,67 @@ if __name__ == '__main__':
     cnn_model = cnn_autoencoder(input_img)
     cnn_model.fit(x_train, x_train, epochs=epochs, batch_size=batch_size, shuffle=True, verbose=1, validation_split=0.1)
     restored_imgs = cnn_model.predict(x_test)
-    cnn_model.save('cnn_model1.h5')
+    cnn_model.save('cnn_model.h5')
 
-    #plot cnn architecture
-    plot_model(cnn_model, show_shapes=True, to_file = 'model1.png')
+    cnn_model = load_model('cnn_model.h5')
+
+    plot cnn architecture
+    plot_model(cnn_model, show_shapes=True, to_file = 'figures/model1.png')
 
     #plot loss
-    loss_plot(cnn_model) #add plotname if want to save
+    loss_plot(cnn_model, 'loss_plot.png') #add plotname if want to save
 
     #plot reconstructed images
-    plot_reconstruction(x_test, restored_imgs, n_images=10) #add plotname if want to save
-
-    #plot encoded images
-    get_encoded_plot(cnn_model, x_train) #add plotname if want to save
-
-    #plot attention model
-    attention_model(cnn_model, x_train, 3) #add plotname if want to save
+    plot_reconstruction(x_test, restored_imgs, n_images=10, plotname='recon.png') #add plotname if want to save
+    #
+    # #plot encoded images
+    get_encoded_plot(cnn_model, x_train, plotname='encoded_plot.png') #add plotname if want to save
+    #
+    # #plot attention model
+    attention_model(cnn_model, x_train, 3, plotname='attention.png') #add plotname if want to save
 
     ########### KMeans Clustering ###########
 
     #elbow plot
-    elbow_plot(x_train, K=10) #add plotname if want to save
+    # elbow_plot(x_train, K=10) #add plotname if want to save
 
     n_clusters = 7
-
-    #cluster histogram
-    cluster_hist(train_labels, n_clusters)
 
     #encoded and compress train, test, and validation images
     X_encoded_compressed_reshape = encoded_compressed(cnn_model, x_train)
     test_enc_compress = encoded_compressed(cnn_model, x_test)
-    valid_enc_compress = encoded_compressed(cnn_model, x_valid)
+    #valid_enc_compress = encoded_compressed(cnn_model, x_valid)
 
     #fit kMeans model and get labels
     km = KMeans(n_clusters=n_clusters)
     km.fit(X_encoded_compressed_reshape)
 
+    #to write
+    pickle_name = 'kmeans_model.pkl'
+    with open(pickle_name, 'wb') as f:
+        pickle.dump(km, f)
+
+    #to read
+    with open('kmeans_model.pkl', 'rb') as f:
+        k_model = pickle.load(f)
+
+
+
     train_labels = km.labels_
+    #if reading model
+    train_labels = k_model.labels_
     test_labels = km.predict(test_enc_compress)
-    valid_labels = km.predict(valid_enc_compress)
+    # valid_labels = km.predict(valid_enc_compress)
+
+    #cluster histogram
+    cluster_hist(train_labels, n_clusters)
+
 
     print("Train labels: {}".format(train_labels))
     print("Test labels: {}".format(test_labels))
-    print("Valid labels: {}".format(valid_labels))
+    # print("Valid labels: {}".format(valid_labels))
 
     #plot from each cluster for comparison
     plot_clusters(x_train, train_labels, 7, 9)
     plot_clusters(x_test, test_labels, 7, 3)
-    plot_clusters(x_valid, valid_labels, 7, 1)
+    # plot_clusters(x_valid, valid_labels, 7, 1)
