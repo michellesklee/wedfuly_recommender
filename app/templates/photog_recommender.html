@@ -1,0 +1,271 @@
+<style>
+
+  body{
+    background-image:url('https://cdn.dylanmhowell.com/wp-content/uploads/2016/05/dylan-m-howell-24.jpg');
+    width:100%;
+    background-size: cover;
+  }
+  @media only screen and (max-width: 600px) {
+      body {
+          background-size: auto;
+      }
+  }
+
+  @font-face {
+    font-family: Cabin;
+    src: url(static/fonts/cabin-regular-webfont.woff);
+}
+
+
+.main {
+background-color: rgba(255, 255, 255, 0.5);
+margin-top: 100px;
+padding-bottom: 50px;
+}
+.main h1 {
+font-size: 3.5em;
+font-family: Cabin;
+color: #2E3759;
+}
+.main h2 {
+font-size: 2em;
+font-family: Cabin;
+color: #2E3759;
+}
+.main h3 {
+font-size: 2em;
+font-family: Cabin;
+color: #2E3759;
+}
+.main p {
+font-size:1em;
+font-family: Cabin;
+color: #2E3759;
+}
+.buttons {
+display: flex;
+flex-wrap: nowrap;
+justify-content: center;
+}
+.input {
+  font-size:1.50em;
+  font-family: Cabin;
+  color: #2E3759;
+}
+button {
+         padding: 1vh 2vw;
+         background-color: #2E3759;
+         color: white;
+         border-radius: 16px;
+         border-color: white;
+         padding-left: 12px;
+         padding-right: 12px;
+         font-size: 24px;
+         font-weight: bold;
+     }
+button:hover {
+         background-color: rgba(0,0,0,0);
+         color: #2E3759;
+         border-color: #2E3759;
+}
+
+input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  border-bottom: 1px solid black;
+}
+
+select {
+  font-size: 1.3em;
+  padding:10px;
+  -webkit-appearance: push-button;
+         -moz-appearance: none;
+          appearance: none;
+          margin: 10px;
+          background-color: #DEDDDA;
+          color: #DF611F;
+          outline: none;
+          border: none;
+        }
+
+hr{
+  border: 0;
+    height: 3px;
+    background: #DEDDDA;
+}
+
+.submit{
+  font-size: 2em;
+  border-color: #345863;
+  background: #345863;
+  border-radius: 6px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font: Cabin;
+  color: white;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  display: inline-block;
+}
+
+input[type="checkbox"][id^="cb"] {
+  display: none;
+}
+
+label {
+  border: 1px solid #fff;
+  padding: 0px;
+  display: block;
+  position: relative;
+  margin: 0px;
+  cursor: pointer;
+}
+
+label:before {
+  background-color: white;
+  color: white;
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  border: 1px solid grey;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 28px;
+  transition-duration: 0.4s;
+  transform: scale(0);
+}
+
+label img {
+  height: 200px;
+  width: 200px;
+  transition-duration: 0.2s;
+  transform-origin: 50% 50%;
+}
+
+:checked + label {
+  border-color: #ddd;
+}
+
+:checked + label:before {
+  content: "✓";
+  background-color: grey;
+  transform: scale(1);
+}
+
+:checked + label img {
+  transform: scale(0.9);
+  box-shadow: 0 0 5px #333;
+  z-index: -1;
+}
+
+</style>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta content="IE=edgechrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=1" name="viewport" />
+
+    <link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/favicons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+    <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/6563636/6910192/css/fonts.css" />
+
+<div class="overlay">
+
+</div>
+
+    <title>Wedfuly Recommender</title>
+
+  </head>
+
+  <body>
+
+<div class="main">
+  <div style="text-align:center">
+    <br><br>
+  <img src="static/img/W_logo.png" style="width: 15%">
+    <div class="starter-template">
+
+      <h1>Wedding Photographer Recommender</h1>
+    </div>
+  <br><br>
+
+<form action='/photog_recommendations', method='POST'>
+
+  <div><h3>What is the clients budget?</h3></div>
+  <p>
+    <input class="input" type="number" name="total_price">
+  </p>
+  <br><br>
+
+  <div><h3>How many shooters do the clients require?</h3></div>
+  <p>
+    <input class="input" type="number" name="shooters">
+  </p>
+  <br><br>
+
+  <div><h3>What is the approximate size of the wedding?</h3></div>
+  <p>
+    <input class="input" type="number" name="size_of_wedding">
+  </p>
+  <br><br>
+
+  <div><h3>What type of coverage do they require?</h3></div>
+
+  <select name="coverage" id="coverage" class="selectpicker form-control">
+      <option selected="selected" value = ''>Select Coverage</option>
+      <option value="type_of_coverage_over10_hours">Over 10 hours</option>
+      <option value="type_of_coverage_8_hours">Approximately 8 hours</option>
+      <option value="type_of_coverage_elopement">Elopement</option>
+  </select>
+  <br><br>
+
+  <div><h3>Do they require an engagement session?</h3></div>
+  <select name="engagement" id="engagement" class="form-control form-control-selectpicker">
+      <option selected="selected" value = ''>Select Option</option>
+      <option value="engagement_session_no">No</option>
+      <option value="engagement_session_yes_included">Yes - Included</option>
+      <option value="engagement_session_yes_paid_extra">Yes - Extra</option>
+  </select>
+  <br><br>
+
+<div><h3>Select two images that match the clients' style</h3></div>
+<div>
+  <ul>
+    <li><input type="checkbox" id="cluster0" />
+      <label for="cluster0"><img src="static/img/photo_cluster0.jpg"/></label>
+    </li><br>
+    <li><input type="checkbox" id="cluster1" />
+      <label for="cluster1"><img src="static/img/photo_cluster1.jpg"/></label>
+    </li><br>
+    <li><input type="checkbox" id="cluster2" />
+      <label for="cluster2"><img src="static/img/photo_cluster2.jpg"/></label>
+    </li>
+
+  </ul>
+</div>
+
+  <br><br><br>
+
+  <button type="submit">Find my photographer!</button>
+</form>
+
+
+  </div>
+</div>
+</body>

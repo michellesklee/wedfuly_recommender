@@ -1,7 +1,7 @@
 <style>
 
    body{
-     background-image:url('http://s3.weddbook.com/t4/2/6/4/2649043/blush-pink-cream-green-wedding-bouquet-spring-bouquet-rustic-wedding-blush-wedding-flowers-roses-hydrangea-floral-bouquet.jpg');
+     background-image:url('https://cdn.dylanmhowell.com/wp-content/uploads/2016/05/dylan-m-howell-24.jpg');
      width:100%;
     background-size: cover;
    }
@@ -53,10 +53,10 @@
             padding: 1vh 2vw;
             background-color: #2E3759;
             color: white;
-            border-radius: 16px;
+            border-radius: 20px;
             border-color: white;
-            padding-left: 12px;
-            padding-right: 12px;
+            padding-left: 18px;
+            padding-right: 18px;
             font-size: 24px;
             font-weight: bold;
         }
@@ -129,26 +129,43 @@
 
 <title>Wedfuly Recommender</title>
 </head>
+
 <body>
-    <div class="main">
-      <div style="text-align:center">
+  <div class="main">
+    <div style="text-align:center">
+
+      <br><br><br>
+      <img src="static/img/W_logo.png" style="width: 10%">
       <br><br><br>
       <div class="starter-template">
-        <h1>Wedding Florist Recommender</h1>
+        <h1>Wedding Vendor Recommender</h1>
 
       </div>
       <br><br><br>
-      <div class='buttons'>
 
-      <form action='/recommender', method='POST'>
+      <div class='buttons'>
+      <form action='/florist_recommender', method='POST'>
         <!-- <input class="submit" type="submit" value="Find my florist!"> -->
-        <button type="submit">Find Your Florist</button>
+        <button type="submit">Find A Florist</button>
+      </form>
+      <br>
+
+      <form action='/photog_recommender', method='POST'>
+        <button type="submit">Find A Photographer</button>
       </form>
 
+      <!-- <form action='/caterer_recommender', method='POST'>
+        <button type="submit">Find A Caterer</button>
+      </form>
 
-    <!-- </div> -->
+      <form action='/bakery_recommender', method='POST'>
+        <button type="submit">Find A Bakery</button>
+      </form> -->
+
+
+
 
 
     </div>
     </div>
-  </body>
+</body>
